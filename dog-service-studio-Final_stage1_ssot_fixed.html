@@ -43,6 +43,18 @@ body {
   color: #7a1d1d;
   font-weight: 700;
 }
+.formError {
+  margin-top: 8px;
+  color: #b3261e;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: start;
+}
+.formLink { cursor:pointer; text-decoration:underline; font-size:13px; opacity:.8; background:none; border:0; padding:0; margin:6px 0 10px; color:inherit; }
+.formLink:hover { opacity:1; }
+.formSuccess { margin-top:8px; color:#1b5e20; }
+.passRow { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.passRow #inpPassword { margin:0; }
 
 /* ===== TOPBAR ===== */
 .topbar {
@@ -72,6 +84,22 @@ body {
   transition: background 0.15s;
 }
 .topbarBtn:hover { background: #f5f5f5; }
+.topnav { position: sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid rgba(0,0,0,.08); display:none; }
+#topbar.topnav { position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid rgba(0,0,0,.08); }
+#topbar .topnavInner { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px; padding:10px 12px; }
+#topbar .topnavLeft, #topbar .topnavRight { display:flex; align-items:center; gap:8px; }
+#topbar .topnavCenter { min-width:0; }
+#topbar .topnavTabs { display:flex; flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; gap:10px; justify-content:center; padding:0; margin:0; scrollbar-width:thin; }
+#topbar .topnavTabs::-webkit-scrollbar { height:6px; }
+#topbar .topnavTab { flex:0 0 auto; white-space:nowrap; border-radius:999px; padding:8px 12px; line-height:1; border:1px solid rgba(0,0,0,.1); background:#fff; font-weight:700; cursor:pointer; font-family:'Assistant',sans-serif; font-size:13px; }
+#topbar button, #topbar .topbarBtn, #topbar .pill { width:auto !important; min-width:unset !important; display:inline-flex; align-items:center; justify-content:center; }
+.topnavTab.active { font-weight:900; border-color:#202020; box-shadow: inset 0 -2px 0 #202020; }
+@media (max-width:760px){
+  .topbarRow { padding:10px 12px; }
+}
+@media (max-width:520px){
+  #topbar .topnavTabs { justify-content:flex-start; }
+}
 
 /* ===== SCREENS ===== */
 .screen { display: none; padding: 20px; max-width: 680px; margin: 0 auto; }
@@ -327,11 +355,85 @@ button:active { transform: translateY(1px); }
 .requestCard { border:1px solid var(--border); border-radius: var(--radius-sm); padding:12px 14px; margin-top:10px; background:#fff; }
 .badge { display:inline-block; padding:2px 10px; border-radius:999px; font-size:12px; font-weight:800; border:1px solid transparent; }
 .badge-submitted { background:#fff4dd; color:#8a5a00; border-color:#f0d39a; }
+.badge-pending { background:#fff4dd; color:#8a5a00; border-color:#f0d39a; }
 .badge-approved { background:#e9f6ff; color:#1f5d7a; border-color:#b8dff4; }
 .badge-in_progress { background:#eee9ff; color:#4b2e83; border-color:#d6caf9; }
 .badge-completed { background:#e8f8ef; color:#1f6b45; border-color:#b7e6ca; }
 .badge-declined { background:#ffeaea; color:#8a2c2c; border-color:#f1bcbc; }
 .badge-cancelled { background:#f0f0f0; color:#555; border-color:#d6d6d6; }
+.badge.submitted{ background:#fff3cd; color:#8a6d3b; }
+.badge.pending{ background:#fff3cd; color:#8a6d3b; }
+.badge.approved{ background:#e7f1ff; color:#0b5ed7; }
+.badge.completed{ background:#e6f4ea; color:#137333; }
+.badge.declined{ background:#fde8e8; color:#b3261e; }
+.providerFilterBar { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:8px; margin:4px 0 12px; }
+.providerFilterBar input, .providerFilterBar select { margin:0; }
+.providerInboxList { display:flex; flex-direction:column; gap:10px; }
+.providerInboxRow { display:grid; grid-template-columns:minmax(190px,1.2fr) minmax(170px,.9fr) minmax(250px,1fr); gap:14px; align-items:center; padding:18px; border:1px solid var(--border); border-radius:14px; background:#fff; cursor:pointer; transition:box-shadow .15s ease, transform .15s ease; min-width:0; }
+.providerInboxRow:hover { box-shadow:0 10px 24px rgba(0,0,0,.06); border-color:#cfd5df; transform:translateY(-1px); }
+.providerInboxRow:focus { outline:2px solid rgba(58,108,217,0.35); outline-offset:2px; }
+.providerMain { min-width:0; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.providerDogName { display:block; font-weight:600; font-size:18px; line-height:1.2; letter-spacing:0.1px; }
+.providerOwner { margin-top:3px; color:var(--muted); font-size:13px; line-height:1.35; width:100%; }
+.providerDogAvatar{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--av, #e5e7eb);
+  color:#111;
+  border:1px solid rgba(0,0,0,.06);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  margin-left:8px;
+}
+.providerMain .providerDogName{ display:inline-block; }
+.providerStatusOpen::before{
+  content:'';
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#ffb300;
+  display:inline-block;
+  margin-left:6px;
+}
+.providerInboxRow .providerMeta { display:flex; gap:10px; align-items:center; flex-wrap:wrap; min-width:0; line-height:1.35; }
+.providerStatusDot { width:7px; height:7px; border-radius:50%; display:inline-block; margin:0 6px; vertical-align:middle; background:#f59e0b; }
+.providerRight { display:flex; align-items:center; justify-content:space-between; gap:10px; min-width:0; }
+.providerCityDate { color:var(--muted); font-size:13px; line-height:1.35; }
+.providerActions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.providerOpenBtn, .providerQuickBtn { width:auto; margin:0; min-height:40px; padding:8px 12px; border-radius:999px; }
+html[lang="en"] .providerDogName,
+html[lang="en"] .providerMeta { letter-spacing:0.2px; }
+.providerQuickBtn { background:#f6f7f9; border:1px solid var(--border); font-weight:700; }
+.providerQuickBtn:hover { background:#eceff3; }
+.providerOpenBtn:hover { filter:brightness(0.96); }
+.providerOpenBtn:focus, .providerQuickBtn:focus { outline:2px solid rgba(58,108,217,0.35); outline-offset:2px; }
+.providerActionComplete { background:#e8f8ef; border-color:#b7e6ca; color:#1f6b45; }
+.providerActionDecline { background:#ffeaea; border-color:#f1bcbc; color:#8a2c2c; }
+.providerDangerOutline { background:#fff; border-color:#d68484; color:#8a2c2c; }
+.providerDrawerOverlay { position:fixed; inset:0; background:rgba(18,22,31,0.45); display:none; z-index:9998; }
+.providerDrawerOverlay.open { display:block; }
+.providerDrawerPanel { position:fixed; top:0; right:0; width:min(460px, 96vw); height:100vh; background:#fff; border-left:1px solid var(--border); box-shadow: -8px 0 30px rgba(0,0,0,0.18); transform:translateX(100%); transition:transform .2s ease; z-index:9999; padding:16px; overflow:auto; }
+.providerDrawerOverlay.open .providerDrawerPanel { transform:translateX(0); }
+.providerDrawerHeader { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.providerDrawerTitle { margin:0; font-size:22px; }
+.providerDrawerClose { width:auto; margin:0; padding:6px 12px; }
+.providerDrawerBody { margin-top:12px; display:grid; gap:8px; }
+.providerDrawerRow { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; border-bottom:1px dashed #edf0f4; padding-bottom:6px; }
+.providerDrawerLabel { color:var(--muted); font-size:13px; }
+.providerDrawerValue { font-weight:800; text-align:right; }
+.providerDrawerActions { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+@media (max-width: 720px){
+  .providerFilterBar { grid-template-columns:1fr 1fr; }
+  .providerFilterBar input { grid-column:1 / -1; }
+  .providerInboxRow { grid-template-columns:1fr; gap:10px; padding:12px; }
+  .providerInboxRow .providerMeta { order:2; }
+  .providerRight { order:3; display:block; }
+  .providerActions { margin-top:8px; justify-content:stretch; }
+  .providerOpenBtn, .providerQuickBtn { flex:1 1 auto; width:100%; }
+}
 
 /* ===== SERVICES LIST (vertical, old) ===== */
 .svcList { display: flex; flex-direction: column; gap: 10px; }
@@ -344,7 +446,7 @@ button:active { transform: translateY(1px); }
 <body>
 
   <div id="errorBanner" class="errorBanner" style="display:none"></div>
-  <div id="topbar" class="topbar"></div>
+  <div id="topbar" class="topnav"></div>
 
   <!-- SCREEN 1: LOGIN -->
   <section id="screen-login" class="screen active" style="max-width:1000px; padding:20px;">
@@ -359,8 +461,13 @@ button:active { transform: translateY(1px); }
 
       <div style="max-width:320px; margin:0 auto;">
         <input id="inpUsername" id2="inpEmail" placeholder="אימייל" autocomplete="email" type="email" style="margin-bottom:8px;" />
-        <input id="inpPassword" placeholder="סיסמה" type="password" autocomplete="current-password" style="margin-bottom:14px;" />
+        <div class="passRow">
+          <input id="inpPassword" placeholder="סיסמה" type="password" autocomplete="current-password" style="margin-bottom:0;" />
+          <button class="btn-secondary" id="btnTogglePass" type="button" style="width:auto; margin:0; padding:8px 12px;">👁</button>
+        </div>
+        <div id="loginError" class="formError" style="display:none"></div>
         <button class="btn-primary" id="btnLogin" type="button" style="border-radius:50px; margin-bottom:8px;">התחבר</button>
+        <button id="btnForgotPassword" class="formLink" type="button">שכחת סיסמה?</button>
         <button class="btn-secondary" id="btnSignup" type="button" style="border-radius:50px; margin-bottom:8px;">הרשמה</button>
       </div>
 
@@ -391,6 +498,21 @@ button:active { transform: translateY(1px); }
 
 
   
+  <!-- SCREEN: RESET PASSWORD -->
+  <section id="screen-resetPassword" class="screen" style="max-width:1000px; padding:20px;">
+    <div class="hero">
+      <h1 id="rpTitle">בחר סיסמה חדשה</h1>
+      <p id="rpSub">הזן סיסמה חדשה כדי להשלים את תהליך האיפוס.</p>
+      <div style="max-width:320px; margin:0 auto;">
+        <input id="rpNew" type="password" autocomplete="new-password" placeholder="סיסמה חדשה" style="margin-bottom:8px;" />
+        <input id="rpConfirm" type="password" autocomplete="new-password" placeholder="אימות סיסמה" style="margin-bottom:8px;" />
+        <div id="rpMsg" class="formError" style="display:none"></div>
+        <button class="btn-primary" id="btnUpdatePassword" type="button" style="border-radius:50px; margin-bottom:8px;">עדכן סיסמה</button>
+        <button class="btn-secondary" id="btnBackToLoginFromReset" type="button" style="border-radius:50px;">חזרה להתחברות</button>
+      </div>
+    </div>
+  </section>
+
   <!-- SCREEN: ABOUT -->
   <section id="screen-about" class="screen">
     <div class="header">מי אנחנו ומה אנחנו מציעים</div>
@@ -1374,10 +1496,25 @@ var sbStorage = (function(){
     var isAdmin = !!(user && user.id === window.ADMIN_UID);
 
     btn.style.display = isAdmin ? '' : 'none';
+    updateTopNavProviderVisibility(user);
   }catch(e){
     console.warn('updateProviderVisibility error', e);
   }
 }
+
+  function updateTopNavProviderVisibility(user){
+    try{
+      var tab = document.getElementById('topnavProviderTab');
+      if(!tab) return;
+      var isAdmin = !!(user && user.id === window.ADMIN_UID);
+      tab.style.display = isAdmin ? 'inline-flex' : 'none';
+    }catch(e){}
+  }
+
+  function goProvider(){
+    if(window.showScreen) window.showScreen('provider');
+    if(window.providerLoadRequests) window.providerLoadRequests();
+  }
 
   async function sbRequireUser(){
     var gu = await sbGetUser();
@@ -2358,12 +2495,31 @@ function t(key){
       if(passIn) passIn.placeholder = (lang==='en') ? 'Password' : 'סיסמה';
       var loginBtn = document.getElementById('btnLogin');
       if(loginBtn) loginBtn.textContent = (lang==='en') ? 'Sign In' : 'התחבר';
+      var forgotBtn = document.getElementById('btnForgotPassword');
+      if(forgotBtn) forgotBtn.textContent = (lang==='en') ? 'Forgot password?' : 'שכחת סיסמה?';
       var signupBtn2 = document.getElementById('btnSignup');
       if(signupBtn2) signupBtn2.textContent = (lang==='en') ? 'Sign Up' : 'הרשמה';
       var lh1 = loginScreen2.querySelector('.hero h1');
       if(lh1) lh1.textContent = (lang==='en') ? 'Welcome Back' : 'ברוכים השבים';
       var lp = loginScreen2.querySelector('.hero p');
       if(lp) lp.textContent = (lang==='en') ? 'Sign in to manage your dog\'s care.' : 'כדי שנוכל להתאים את השירות הטוב ביותר לכלב שלכם, בואו נתחיל בהתחברות.';
+    }
+
+    // ===== RESET PASSWORD SCREEN =====
+    var rpScreen = document.getElementById('screen-resetPassword');
+    if(rpScreen){
+      var rpTitle = document.getElementById('rpTitle');
+      if(rpTitle) rpTitle.textContent = (lang==='en') ? 'Choose a new password' : 'בחר סיסמה חדשה';
+      var rpSub = document.getElementById('rpSub');
+      if(rpSub) rpSub.textContent = (lang==='en') ? 'Enter a new password to complete recovery.' : 'הזן סיסמה חדשה כדי להשלים את תהליך האיפוס.';
+      var rpNew = document.getElementById('rpNew');
+      if(rpNew) rpNew.placeholder = (lang==='en') ? 'New password' : 'סיסמה חדשה';
+      var rpConfirm = document.getElementById('rpConfirm');
+      if(rpConfirm) rpConfirm.placeholder = (lang==='en') ? 'Confirm password' : 'אימות סיסמה';
+      var rpBtn = document.getElementById('btnUpdatePassword');
+      if(rpBtn) rpBtn.textContent = (lang==='en') ? 'Update password' : 'עדכן סיסמה';
+      var rpBack = document.getElementById('btnBackToLoginFromReset');
+      if(rpBack) rpBack.textContent = (lang==='en') ? 'Back to login' : 'חזרה להתחברות';
     }
 
     // ===== SERVICE FORM SCREEN =====
@@ -2722,6 +2878,10 @@ function byId(id){ return document.getElementById(id); }
 
   function showScreen(key, opts){
     opts = opts || {};
+    if(window.__RECOVERY_FLOW__ && key !== 'resetPassword'){
+      key = 'resetPassword';
+      opts = { reset:true };
+    }
     ensureNavStack();
 
     // history handling
@@ -2769,6 +2929,23 @@ el.classList.add('active');
 function updateTopbar(){
     var topbar = byId('topbar');
     if(!topbar) return;
+    var TOP_TABS = [
+      { key:'dogs', labelHe:'כלבים', labelEn:'Dogs', screen:'dogs' },
+      { key:'services', labelHe:'שירותים', labelEn:'Services', screen:'service' },
+      { key:'knowledge', labelHe:'ידע', labelEn:'Knowledge', screen:'library' },
+      { key:'provider', labelHe:'ספק', labelEn:'Provider', screen:'provider' },
+      { key:'profile', labelHe:'פרופיל', labelEn:'Profile', screen:'dogProfile' }
+    ];
+    function topTabByScreen(screen){
+      if(screen === 'serviceForm') return 'services';
+      if(screen === 'breeds' || screen === 'breedDetails') return 'knowledge';
+      if(screen === 'dogsittingPool' || screen === 'dogId') return 'dogs';
+      if(screen === 'dogProfile') return 'profile';
+      if(screen === 'provider') return 'provider';
+      if(screen === 'library') return 'knowledge';
+      if(screen === 'service') return 'services';
+      return 'dogs';
+    }
 
     ensureNavStack();
 
@@ -2781,14 +2958,15 @@ function updateTopbar(){
     topbar.style.display = 'block';
     topbar.innerHTML = '';
 
-    // Compact top bar: Back + Title + Language toggle
+    // Top nav: Back + Tabs + Language toggle
     var row = document.createElement('div');
-    row.className = 'topbarRow';
-    row.style.display='flex';
-    row.style.alignItems='center';
-    row.style.justifyContent='space-between';
-    row.style.gap='10px';
-    row.style.flexDirection='row-reverse';
+    row.className = 'topnavInner';
+    var left = document.createElement('div');
+    left.className = 'topnavLeft';
+    var center = document.createElement('div');
+    center.className = 'topnavCenter';
+    var right = document.createElement('div');
+    right.className = 'topnavRight';
 
     var canBack = (state.navStack && state.navStack.length > 1);
 
@@ -2800,23 +2978,25 @@ function updateTopbar(){
       try{ navBack(); }catch(e){}
     };
 
-    var title = document.createElement('div');
-    title.className = 'topbarTitle';
-
-    var label = getScreenLabel(state.currentScreenKey);
-
-    // context titles
-    var dog = currentDog();
-    if(dog && (state.currentScreenKey === 'dogProfile' || state.currentScreenKey === 'dogDetails' || state.currentScreenKey === 'dogServices' || state.currentScreenKey === 'dogHistory')){
-      label = dog.name || label;
+    var tabs = document.createElement('div');
+    tabs.className = 'topnavTabs';
+    var activeTab = topTabByScreen(state.currentScreenKey);
+    for(var i=0;i<TOP_TABS.length;i++){
+      var tab = TOP_TABS[i];
+      var tb = document.createElement('button');
+      tb.type = 'button';
+      tb.className = 'topnavTab' + (activeTab === tab.key ? ' active' : '');
+      if(tab.key === 'provider') tb.id = 'topnavProviderTab';
+      tb.textContent = (state.lang === 'en') ? tab.labelEn : tab.labelHe;
+      if(tab.key === 'provider'){
+        tb.onclick = function(){ goProvider(); };
+      } else {
+        (function(screenId){
+          tb.onclick = function(){ if(window.showScreen) window.showScreen(screenId); };
+        })(tab.screen);
+      }
+      tabs.appendChild(tb);
     }
-    var breed = currentBreed();
-    if(breed && state.currentScreenKey === 'breedDetails'){
-      var bn = ((state.lang === 'en') && breed.nameEn) ? breed.nameEn : breed.name;
-      label = (breed.emoji ? (breed.emoji + ' ') : '') + (bn || label);
-    }
-
-    title.textContent = label;
 
     var langBtn = document.createElement('button');
     langBtn.className = 'topbarBtn topbarLang';
@@ -2825,10 +3005,14 @@ function updateTopbar(){
       try{ toggleLang(); }catch(e){}
     };
 
-    row.appendChild(backBtn);
-    row.appendChild(title);
-    row.appendChild(langBtn);
+    left.appendChild(backBtn);
+    center.appendChild(tabs);
+    right.appendChild(langBtn);
+    row.appendChild(left);
+    row.appendChild(center);
+    row.appendChild(right);
     topbar.appendChild(row);
+    updateTopNavProviderVisibility();
   }
 
 function breedsData(){
@@ -3603,28 +3787,126 @@ details.appendChild(notes);
 }
 
   // --------- ACTIONS ---------
-  
+  function isRecoveryMode(){
+    var h = String(window.location.hash || '');
+    return h.indexOf('type=recovery') !== -1;
+  }
+  window.__RECOVERY_FLOW__ = isRecoveryMode();
+
+  function setRpMsg(msg, ok){
+    var m = byId('rpMsg');
+    if(!m) return;
+    if(msg){
+      m.style.display = 'block';
+      m.className = ok ? 'formError formSuccess' : 'formError';
+      m.textContent = String(msg);
+    } else {
+      m.style.display = 'none';
+      m.className = 'formError';
+      m.textContent = '';
+    }
+  }
+
+  function goToLoginFromReset(){
+    setRpMsg('');
+    var n = byId('rpNew'); if(n) n.value = '';
+    var c = byId('rpConfirm'); if(c) c.value = '';
+    if(window.showScreen) window.showScreen('login',{reset:true});
+  }
+
+  async function doUpdatePassword(){
+    var isEn = (state && state.lang === 'en');
+    try{
+      setRpMsg('');
+      var n = byId('rpNew');
+      var c = byId('rpConfirm');
+      var newPass = n ? String(n.value || '') : '';
+      var confirm = c ? String(c.value || '') : '';
+      if(newPass.length < 6){
+        setRpMsg(isEn ? 'Password is too short' : 'סיסמה קצרה מדי', false);
+        return;
+      }
+      if(newPass !== confirm){
+        setRpMsg(isEn ? 'Passwords do not match' : 'הסיסמאות לא תואמות', false);
+        return;
+      }
+      var sb = getSupabaseClient();
+      if(!sb){ setRpMsg('Supabase client missing', false); return; }
+      var res = await sb.auth.updateUser({ password: newPass });
+      if(res && res.error){
+        setRpMsg(res.error.message || String(res.error), false);
+        return;
+      }
+      setRpMsg(isEn ? 'Password updated. You can log in now.' : 'הסיסמה עודכנה. אפשר להתחבר עכשיו.', true);
+      window.__RECOVERY_FLOW__ = false;
+      try{
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }catch(e){}
+      try{ await sb.auth.signOut(); }catch(_e){}
+      setTimeout(function(){ goToLoginFromReset(); }, 800);
+    }catch(err){
+      setRpMsg(err && err.message ? err.message : String(err), false);
+    }
+  }
+
 async function doLogin(){
+  if(window.__loginBusy) return;
+  function setLoginError(msg){
+    var e = byId('loginError');
+    if(!e) return;
+    e.className = 'formError';
+    if(msg){
+      e.style.display = 'block';
+      e.textContent = String(msg);
+    } else {
+      e.style.display = 'none';
+      e.textContent = '';
+    }
+  }
+  function setLoginLoading(on){
+    var b = byId('btnLogin');
+    if(!b) return;
+    if(on){
+      if(!b.getAttribute('data-label')) b.setAttribute('data-label', b.textContent || '');
+      b.disabled = true;
+      b.textContent = (state && state.lang === 'en') ? 'Logging in...' : 'מתחבר...';
+      window.__loginBusy = true;
+    } else {
+      b.disabled = false;
+      b.textContent = b.getAttribute('data-label') || ((state && state.lang === 'en') ? 'Sign In' : 'התחבר');
+      window.__loginBusy = false;
+    }
+  }
   try{
+    setLoginError('');
     var emailEl = byId('inpUsername');
     var passEl  = byId('inpPassword');
     var email = emailEl ? emailEl.value.trim() : '';
     var pass  = passEl ? passEl.value : '';
-    if(!email){ showError(new Error('נא להזין אימייל')); return; }
-    if(!pass){ showError(new Error('נא להזין סיסמה')); return; }
+    if(!email){ setLoginError((state && state.lang === 'en') ? 'Please enter email' : 'נא להזין אימייל'); return; }
+    if(!pass){ setLoginError((state && state.lang === 'en') ? 'Please enter password' : 'נא להזין סיסמה'); return; }
+    setLoginLoading(true);
 
     var sb = getSupabaseClient();
-    if(!sb){ showError(new Error('Supabase client missing')); return; }
+    if(!sb){ setLoginError('Supabase client missing'); return; }
 
     var res = await sb.auth.signInWithPassword({ email: email, password: pass });
-    if(res.error){ showError(res.error); return; }
+    if(res.error){
+      var msg = res.error.message || String(res.error);
+      var low = String(msg || '').toLowerCase();
+      if(low.indexOf('invalid login credentials') !== -1 || low.indexOf('invalid credentials') !== -1){
+        msg = (state && state.lang === 'en') ? 'Invalid login credentials' : 'פרטי התחברות שגויים';
+      }
+      setLoginError(msg);
+      return;
+    }
 
     var user = (res.data && res.data.user) ? res.data.user : null;
     if(!user){
       var gu = await sbGetUser();
       user = (gu && gu.data) ? gu.data.user : null;
     }
-    if(!user){ showError(new Error('Login failed: no user')); return; }
+    if(!user){ setLoginError('Login failed: no user'); return; }
 
     loadState();
     state.user = user.id;
@@ -3637,7 +3919,9 @@ async function doLogin(){
     showScreen('dogs');
     
   }catch(err){
-    showError(err);
+    setLoginError(err && err.message ? err.message : String(err));
+  } finally {
+    setLoginLoading(false);
   }
 }
 
@@ -4400,6 +4684,8 @@ perDaySubtotal: Math.round(perDaySubtotal),
       bind('btnSignup','click', function(){ showScreen('signup'); });
       bind('btnDoSignup','click', doSignup);
       bind('btnBackToLogin','click', function(){ showScreen('login',{reset:true}); });
+      bind('btnUpdatePassword','click', doUpdatePassword);
+      bind('btnBackToLoginFromReset','click', goToLoginFromReset);
       bind('btnGoAddDog','click', goAddDog);
       bind('btnSaveDog','click', saveDog);
       bind('btnCancelDog','click', function(){ renderDogs(); showScreen('dogs'); });
@@ -4433,6 +4719,56 @@ perDaySubtotal: Math.round(perDaySubtotal),
 
       var inp = byId('inpUsername');
       if(inp) inp.addEventListener('keydown', function(e){ if(e && e.key === 'Enter') doLogin(); });
+      var rpNewEl = byId('rpNew');
+      var rpConfirmEl = byId('rpConfirm');
+      if(rpNewEl) rpNewEl.addEventListener('input', function(){ setRpMsg(''); });
+      if(rpConfirmEl) rpConfirmEl.addEventListener('input', function(){ setRpMsg(''); });
+      var pinp = byId('inpPassword');
+      if(pinp) pinp.addEventListener('keydown', function(e){ if(e && e.key === 'Enter') doLogin(); });
+      bind('btnTogglePass','click', function(){
+        var p = byId('inpPassword');
+        if(!p) return;
+        var show = (p.type === 'password');
+        p.type = show ? 'text' : 'password';
+        var t = byId('btnTogglePass');
+        if(t) t.textContent = show ? '🙈' : '👁';
+      });
+      bind('btnForgotPassword','click', async function(){
+        var errBox = byId('loginError');
+        function setMsg(msg, ok){
+          if(!errBox) return;
+          errBox.className = ok ? 'formError formSuccess' : 'formError';
+          errBox.style.display = 'block';
+          errBox.textContent = String(msg || '');
+        }
+        var isEn = (state && state.lang === 'en');
+        var emailEl = byId('inpUsername');
+        var email = emailEl ? String(emailEl.value || '').trim() : '';
+        if(!email){
+          setMsg(isEn ? 'Enter your email to reset your password' : 'נא להזין אימייל כדי לאפס סיסמה', false);
+          return;
+        }
+        var sb = getSupabaseClient();
+        if(!sb){ setMsg('Supabase client missing', false); return; }
+        try{
+          var redirectTo = window.location.origin + window.location.pathname;
+          var res;
+          try{
+            res = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
+          }catch(_err){
+            res = await sb.auth.resetPasswordForEmail(email);
+          }
+          if(res && res.error){
+            setMsg(res.error.message || String(res.error), false);
+            return;
+          }
+          setMsg(isEn ? 'Password reset link sent to your email' : 'שלחנו לך קישור לאיפוס סיסמה למייל', true);
+        }catch(err){
+          setMsg(err && err.message ? err.message : String(err), false);
+        }
+      });
+      if(inp) inp.addEventListener('input', function(){ var e = byId('loginError'); if(e){ e.style.display='none'; e.textContent=''; e.className='formError'; } });
+      if(pinp) pinp.addEventListener('input', function(){ var e = byId('loginError'); if(e){ e.style.display='none'; e.textContent=''; e.className='formError'; } });
 
       // service buttons
       var btns = document.querySelectorAll('#screen-service [data-service]');
@@ -4493,6 +4829,11 @@ loadState();
 
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+  window.addEventListener('DOMContentLoaded', function(){
+    if(isRecoveryMode() && window.showScreen){
+      window.showScreen('resetPassword',{reset:true});
+    }
+  });
 })();
 
 
@@ -4539,39 +4880,526 @@ loadState();
 // PROVIDER DASHBOARD (Stage 2)
 // ==============================
 
-async function providerLoadRequests(){
-  try{
-    console.log("providerLoadRequests ran");
-    
-    var sb = getSupabaseClient();
+window.USE_MOCK_PROVIDER = false;
+window.MOCK_REQUESTS = [
+  { id:1, dog_name:"Luna",  owner_name:"Noam", service_type:"training", status:"submitted",   city:"Tel Aviv",  created_at:"2025-03-04T08:30:00Z", notes:"Pulling on leash" },
+  { id:2, dog_name:"Max",   owner_name:"Dana", service_type:"hosting",  status:"pending",     city:"Ramat Gan", created_at:"2025-03-04T06:00:00Z", notes:"Weekend stay" },
+  { id:3, dog_name:"Bella", owner_name:"Avi",  service_type:"special",  status:"approved",    city:"Herzliya",  created_at:"2025-03-03T18:00:00Z", notes:"Vet transport" },
+  { id:4, dog_name:"Rocky", owner_name:"Maya", service_type:"walking",  status:"in_progress", city:"Tel Aviv",  created_at:"2025-03-03T10:00:00Z", notes:"Morning walks" }
+];
+window.PROVIDER_UI_STATE = window.PROVIDER_UI_STATE || { q:'', status:'all', service:'all', sort:'priority_newest', openId:null };
+window.PROVIDER_LAST_LIST = window.PROVIDER_LAST_LIST || [];
+window.PROVIDER_MOCK_STATE = window.PROVIDER_MOCK_STATE || null;
 
-const { data: userData, error: userErr } = await sb.auth.getUser();
-if(userErr){
-  alert(userErr.message);
-  return;
+function serviceLabel(type){
+  var v = type || '';
+  if(v === 'training') return 'Training';
+  if(v === 'hosting' || v === 'dogsitting') return 'Hosting';
+  if(v === 'special') return 'Special';
+  if(v === 'walking' || v === 'dogwalking') return 'Walking';
+  return String(v || '');
 }
 
-var user = userData ? userData.user : null;
-if(!user || user.id !== window.ADMIN_UID){
-  alert('No access');
-  return;
+function statusLabel(status){
+  var v = String(status || '').toLowerCase();
+  if(v === 'in_progress') return 'In Progress';
+  if(v === 'submitted') return 'Submitted';
+  if(v === 'pending') return 'Pending';
+  if(v === 'approved') return 'Approved';
+  if(v === 'completed') return 'Completed';
+  if(v === 'declined') return 'Declined';
+  if(v === 'cancelled') return 'Cancelled';
+  return v || '-';
 }
 
-    const { data, error } = await sb
-  .from('service_requests')
-  .select('*')
-  .order('created_at', { ascending:false });
+function statusClass(status){
+  var v = String(status || '').toLowerCase();
+  if(!v) return 'badge-cancelled';
+  return 'badge-' + v;
+}
 
-    if(error){
-      alert(error.message);
+function priority(type){
+  var v = String(type || '').toLowerCase();
+  if(v === 'training') return 1;
+  if(v === 'hosting' || v === 'dogsitting') return 2;
+  if(v === 'special') return 3;
+  if(v === 'walking' || v === 'dogwalking') return 4;
+  return 99;
+}
+
+function formatWhen(iso){
+  if(!iso) return '';
+  var d = new Date(iso);
+  if(isNaN(d.getTime())) return String(iso);
+  var dd = d.getDate();
+  var mm = d.getMonth() + 1;
+  var yy = d.getFullYear();
+  if(dd < 10) dd = '0' + dd;
+  if(mm < 10) mm = '0' + mm;
+  return dd + '/' + mm + '/' + yy;
+}
+
+function providerGetMockState(){
+  if(!window.PROVIDER_MOCK_STATE){
+    window.PROVIDER_MOCK_STATE = [];
+    (window.MOCK_REQUESTS || []).forEach(function(r){
+      window.PROVIDER_MOCK_STATE.push({
+        id: r.id,
+        dog_name: r.dog_name,
+        owner_name: r.owner_name,
+        service_type: r.service_type,
+        status: r.status,
+        city: r.city,
+        created_at: r.created_at,
+        notes: r.notes
+      });
+    });
+  }
+  return window.PROVIDER_MOCK_STATE;
+}
+
+function mapProviderRowsFromDb(rows){
+  var out = [];
+  (rows || []).forEach(function(r){
+    out.push({
+      id: r.id,
+      dog_name: (r && r.dogs && r.dogs.name) ? r.dogs.name : (r.dog_name || 'Dog'),
+      owner_name: (r && r.profiles && r.profiles.display_name) ? r.profiles.display_name : (r.owner_name || 'Owner'),
+      service_type: r.service_type,
+      status: r.status,
+      city: r.city,
+      created_at: r.created_at,
+      notes: r.notes
+    });
+  });
+  return out;
+}
+
+function providerSetLoading(on){
+  var box = document.getElementById('providerRequests');
+  var refreshBtn = document.getElementById('btnProviderRefresh');
+  if(refreshBtn) refreshBtn.disabled = !!on;
+  if(box && on){
+    box.innerHTML = '<div class="muted">' + ((state && state.lang === 'en') ? 'Loading requests...' : 'טוען בקשות...') + '</div>';
+  }
+}
+
+function providerShowLoadError(err){
+  console.error('providerLoadRequests error', err);
+  var box = document.getElementById('providerRequests');
+  if(!box) return;
+  box.innerHTML = '<div class="formError" style="display:block;">' + ((state && state.lang === 'en') ? 'Failed to load requests. Please try again.' : 'שגיאה בטעינת בקשות. נסה שוב.') + '</div>';
+}
+
+function providerExtractRow(r){
+  var dogName = '';
+  if(r && r.dog_name) dogName = r.dog_name;
+  if(!dogName && r && r.dogs && r.dogs.name) dogName = r.dogs.name;
+
+  var owner = '';
+  if(r && r.owner_name) owner = r.owner_name;
+  if(!owner && r && r.profiles && r.profiles.display_name) owner = r.profiles.display_name;
+
+  var city = (r && r.city) ? r.city : '';
+  var when = '';
+  if(r && r.created_at) when = r.created_at;
+  if(!when && r && r.start_date) when = r.start_date;
+
+  return {
+    id: r && r.id,
+    dog_name: dogName || '-',
+    owner_name: owner || '-',
+    service_type: r && r.service_type ? r.service_type : '',
+    status: r && r.status ? r.status : '',
+    city: city || '-',
+    created_at: when || '',
+    notes: (r && r.notes) ? r.notes : ''
+  };
+}
+
+function providerGetActionByStatus(status){
+  var v = String(status || '').toLowerCase();
+  if(v === 'submitted' || v === 'pending' || v === 'needs_info'){
+    return [
+      { label:'Approve', status:'approved', cls:'providerQuickBtn' },
+      { label:'Decline', status:'declined', cls:'providerQuickBtn providerActionDecline' }
+    ];
+  }
+  if(v === 'approved' || v === 'in_progress'){
+    return [{ label:'Complete', status:'completed', cls:'providerQuickBtn providerActionComplete' }];
+  }
+  return [];
+}
+
+function providerApplyStatusUpdate(id, nextStatus){
+  if(window.USE_MOCK_PROVIDER){
+    var src = providerGetMockState();
+    src.forEach(function(item){
+      if(String(item.id) === String(id)) item.status = nextStatus;
+    });
+    renderProviderRequests(src);
+    return;
+  }
+  if(window.providerSetStatus){
+    window.providerSetStatus(id, nextStatus);
+    return;
+  }
+  if(window.providerUpdateRequestStatus){
+    window.providerUpdateRequestStatus(id, nextStatus);
+  }
+}
+
+function providerGetFilteredSortedRows(list){
+  var state = window.PROVIDER_UI_STATE || {};
+  var q = String(state.q || '').toLowerCase();
+  var status = state.status || 'all';
+  var service = state.service || 'all';
+  var sort = state.sort || 'priority_newest';
+  var rows = [];
+
+  (list || []).forEach(function(item){
+    var row = providerExtractRow(item);
+    if(q){
+      var inDog = String(row.dog_name || '').toLowerCase().indexOf(q) !== -1;
+      var inOwner = String(row.owner_name || '').toLowerCase().indexOf(q) !== -1;
+      if(!inDog && !inOwner) return;
+    }
+    if(status !== 'all' && String(row.status || '') !== status) return;
+    if(service !== 'all' && String(row.service_type || '') !== service) return;
+    rows.push(row);
+  });
+
+  rows.sort(function(a, b){
+    var aTime = new Date(a.created_at || 0).getTime();
+    var bTime = new Date(b.created_at || 0).getTime();
+    if(isNaN(aTime)) aTime = 0;
+    if(isNaN(bTime)) bTime = 0;
+    if(sort === 'newest') return bTime - aTime;
+    if(sort === 'oldest') return aTime - bTime;
+    var pa = priority(a.service_type);
+    var pb = priority(b.service_type);
+    if(pa !== pb) return pa - pb;
+    return bTime - aTime;
+  });
+  return rows;
+}
+
+function providerRenderRequestsCore(list){
+  var box = document.getElementById('providerRequests');
+  if(!box) return;
+
+  var oldTabs = document.getElementById('providerStatusTabs');
+  if(oldTabs) oldTabs.style.display = 'none';
+  var oldSearch = document.getElementById('providerSearch');
+  if(oldSearch) oldSearch.style.display = 'none';
+
+  box.innerHTML = '';
+  var rows = providerGetFilteredSortedRows(list || []);
+
+  var filter = document.createElement('div');
+  filter.className = 'providerFilterBar';
+
+  var iSearch = document.createElement('input');
+  iSearch.type = 'text';
+  iSearch.placeholder = 'Search by dog or owner';
+  iSearch.value = window.PROVIDER_UI_STATE.q || '';
+  iSearch.addEventListener('input', function(){
+    window.PROVIDER_UI_STATE.q = iSearch.value || '';
+    providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+  });
+  filter.appendChild(iSearch);
+
+  var sStatus = document.createElement('select');
+  ['all','submitted','pending','approved','in_progress','completed','declined'].forEach(function(v){
+    var op = document.createElement('option');
+    op.value = v;
+    op.textContent = (v === 'all') ? 'All statuses' : statusLabel(v);
+    if((window.PROVIDER_UI_STATE.status || 'all') === v) op.selected = true;
+    sStatus.appendChild(op);
+  });
+  sStatus.addEventListener('change', function(){
+    window.PROVIDER_UI_STATE.status = sStatus.value;
+    providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+  });
+  filter.appendChild(sStatus);
+
+  var sService = document.createElement('select');
+  var options = { all:true };
+  (window.PROVIDER_LAST_LIST || []).forEach(function(item){
+    var row = providerExtractRow(item);
+    if(row.service_type) options[row.service_type] = true;
+  });
+  Object.keys(options).forEach(function(v){
+    var op = document.createElement('option');
+    op.value = v;
+    op.textContent = (v === 'all') ? 'All services' : serviceLabel(v);
+    if((window.PROVIDER_UI_STATE.service || 'all') === v) op.selected = true;
+    sService.appendChild(op);
+  });
+  sService.addEventListener('change', function(){
+    window.PROVIDER_UI_STATE.service = sService.value;
+    providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+  });
+  filter.appendChild(sService);
+
+  var sSort = document.createElement('select');
+  [
+    { value:'priority_newest', label:'Priority + Newest' },
+    { value:'newest', label:'Newest' },
+    { value:'oldest', label:'Oldest' }
+  ].forEach(function(item){
+    var op = document.createElement('option');
+    op.value = item.value;
+    op.textContent = item.label;
+    if((window.PROVIDER_UI_STATE.sort || 'priority_newest') === item.value) op.selected = true;
+    sSort.appendChild(op);
+  });
+  sSort.addEventListener('change', function(){
+    window.PROVIDER_UI_STATE.sort = sSort.value;
+    providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+  });
+  filter.appendChild(sSort);
+  box.appendChild(filter);
+
+  if(!rows.length){
+    var empty = document.createElement('div');
+    empty.className = 'muted';
+    empty.textContent = 'No requests';
+    box.appendChild(empty);
+    return;
+  }
+
+  var listWrap = document.createElement('div');
+  listWrap.className = 'providerInboxList';
+  function providerAvatarColor(name){
+    var colors = ['#ffd9d2','#ffe8b8','#d9f0d8','#d8ecff','#e6ddff','#ffdff0'];
+    var code = String(name || '?').charCodeAt(0) || 0;
+    return colors[code % colors.length];
+  }
+
+  rows.forEach(function(r){
+    var row = document.createElement('div');
+    row.className = 'providerInboxRow';
+    row.setAttribute('data-id', String(r.id || ''));
+    row.setAttribute('data-status', String(r.status || ''));
+    row.setAttribute('role', 'button');
+    row.tabIndex = 0;
+    row.addEventListener('click', function(){
+      window.PROVIDER_UI_STATE.openId = r.id;
+      providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+    });
+    row.addEventListener('keydown', function(ev){
+      if(ev.key === 'Enter' || ev.key === ' '){
+        ev.preventDefault();
+        window.PROVIDER_UI_STATE.openId = r.id;
+        providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+      }
+    });
+
+    var main = document.createElement('div');
+    main.className = 'providerMain';
+    var avatar = document.createElement('span');
+    avatar.className = 'providerDogAvatar';
+    avatar.textContent = (r.dog_name || '?').charAt(0).toUpperCase();
+    avatar.style.setProperty('--av', providerAvatarColor(r.dog_name));
+    var dog = document.createElement('span');
+    dog.className = 'providerDogName';
+    dog.textContent = r.dog_name;
+    main.appendChild(avatar);
+    main.appendChild(dog);
+    var owner = document.createElement('div');
+    owner.className = 'providerOwner';
+    owner.textContent = r.owner_name;
+    main.appendChild(owner);
+    row.appendChild(main);
+
+    var middle = document.createElement('div');
+    middle.className = 'providerMeta';
+    var service = document.createElement('span');
+    service.className = 'badge';
+    service.textContent = serviceLabel(r.service_type);
+    middle.appendChild(service);
+    var chip = document.createElement('span');
+    chip.className = 'badge ' + statusClass(r.status);
+    if(r.status === 'submitted' || r.status === 'pending'){
+      var dot = document.createElement('span');
+      dot.className = 'providerStatusDot';
+      middle.appendChild(dot);
+    }
+    chip.textContent = statusLabel(r.status);
+    middle.appendChild(chip);
+    row.appendChild(middle);
+
+    var right = document.createElement('div');
+    right.className = 'providerRight';
+    var cityDate = document.createElement('div');
+    cityDate.className = 'providerCityDate';
+    cityDate.textContent = r.city + ' - ' + formatWhen(r.created_at);
+    right.appendChild(cityDate);
+
+    var actions = document.createElement('div');
+    actions.className = 'providerActions';
+
+    var openBtn = document.createElement('button');
+    openBtn.type = 'button';
+    openBtn.className = 'btn-primary providerOpenBtn';
+    openBtn.textContent = 'Open';
+    openBtn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      window.PROVIDER_UI_STATE.openId = r.id;
+      providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+    });
+    actions.appendChild(openBtn);
+
+    var quick = providerGetActionByStatus(r.status);
+    quick.forEach(function(a){
+      var qb = document.createElement('button');
+      qb.type = 'button';
+      qb.className = a.cls || 'providerQuickBtn';
+      qb.textContent = a.label;
+      qb.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        providerApplyStatusUpdate(r.id, a.status);
+      });
+      actions.appendChild(qb);
+    });
+
+    right.appendChild(actions);
+    row.appendChild(right);
+    listWrap.appendChild(row);
+  });
+
+  box.appendChild(listWrap);
+
+  var openId = window.PROVIDER_UI_STATE.openId;
+  if(openId === null || typeof openId === 'undefined') return;
+
+  var openReq = null;
+  rows.forEach(function(r){
+    if(String(r.id) === String(openId)) openReq = r;
+  });
+  if(!openReq){
+    window.PROVIDER_UI_STATE.openId = null;
+    return;
+  }
+
+  var overlay = document.createElement('div');
+  overlay.className = 'providerDrawerOverlay open';
+  overlay.addEventListener('click', function(ev){
+    if(ev.target === overlay){
+      window.PROVIDER_UI_STATE.openId = null;
+      providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+    }
+  });
+
+  var panel = document.createElement('div');
+  panel.className = 'providerDrawerPanel';
+  var header = document.createElement('div');
+  header.className = 'providerDrawerHeader';
+  var title = document.createElement('h3');
+  title.className = 'providerDrawerTitle';
+  title.textContent = openReq.dog_name;
+  header.appendChild(title);
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'btn-secondary providerDrawerClose';
+  closeBtn.textContent = 'Close';
+  closeBtn.addEventListener('click', function(){
+    window.PROVIDER_UI_STATE.openId = null;
+    providerRenderRequestsCore(window.PROVIDER_LAST_LIST || []);
+  });
+  header.appendChild(closeBtn);
+  panel.appendChild(header);
+
+  var body = document.createElement('div');
+  body.className = 'providerDrawerBody';
+  function addDetailRow(label, value){
+    if(typeof value === 'undefined' || value === null || value === '') return;
+    var d = document.createElement('div');
+    d.className = 'providerDrawerRow';
+    var labelEl = document.createElement('span');
+    labelEl.className = 'providerDrawerLabel';
+    labelEl.textContent = label;
+    var valueEl = document.createElement('span');
+    valueEl.className = 'providerDrawerValue';
+    valueEl.textContent = value;
+    d.appendChild(labelEl);
+    d.appendChild(valueEl);
+    body.appendChild(d);
+  }
+  addDetailRow('Dog', openReq.dog_name);
+  addDetailRow('Owner', openReq.owner_name);
+  addDetailRow('City', openReq.city);
+  addDetailRow('Notes', openReq.notes);
+  addDetailRow('Status', statusLabel(openReq.status));
+  addDetailRow('Service', serviceLabel(openReq.service_type));
+  addDetailRow('Date', formatWhen(openReq.created_at));
+  panel.appendChild(body);
+
+  var actions = providerGetActionByStatus(openReq.status);
+  if(actions.length){
+    var actionWrap = document.createElement('div');
+    actionWrap.className = 'providerDrawerActions';
+    actions.forEach(function(a){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'providerQuickBtn';
+      if(a.status === 'approved') b.className = 'btn-primary';
+      if(a.status === 'declined') b.className = 'providerQuickBtn providerDangerOutline';
+      if(a.status === 'completed') b.className = 'providerQuickBtn providerActionComplete';
+      b.style.width = 'auto';
+      b.textContent = a.label;
+      b.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        window.PROVIDER_UI_STATE.openId = openReq.id;
+        providerApplyStatusUpdate(openReq.id, a.status);
+      });
+      actionWrap.appendChild(b);
+    });
+    panel.appendChild(actionWrap);
+  }
+
+  overlay.appendChild(panel);
+  box.appendChild(overlay);
+}
+
+function providerLoadRequests(){
+  if(window.USE_MOCK_PROVIDER){
+    renderProviderRequests(providerGetMockState());
+    return Promise.resolve();
+  }
+
+  var sb = getSupabaseClient();
+  if(!sb){
+    renderProviderRequests(providerGetMockState());
+    return Promise.resolve();
+  }
+
+  providerSetLoading(true);
+
+  return sb.auth.getSession().then(function(sessRes){
+    var session = sessRes && sessRes.data ? sessRes.data.session : null;
+    if(!session || !session.user){
+      renderProviderRequests(providerGetMockState());
+      return null;
+    }
+    return sb
+      .from('service_requests')
+      .select('id,dog_id,service_type,status,city,created_at,notes,dogs(name),profiles(display_name)')
+      .order('created_at', { ascending:false })
+      .limit(50);
+  }).then(function(qRes){
+    if(!qRes) return;
+    if(qRes.error){
+      providerShowLoadError(qRes.error);
       return;
     }
-
-    renderProviderRequests(data || []);
-  } catch(e){
-    console.error(e);
-    alert(String(e && e.message ? e.message : e));
-  }
+    renderProviderRequests(mapProviderRowsFromDb(qRes.data || []));
+  }).catch(function(err){
+    providerShowLoadError(err);
+  }).then(function(){
+    providerSetLoading(false);
+  });
 }
 window.providerLoadRequests = providerLoadRequests;
 
@@ -4607,6 +5435,9 @@ if(!user || user.id !== window.ADMIN_UID){
 window.providerSetStatus = providerSetStatus;
 
 function renderProviderRequests(list){
+  window.PROVIDER_LAST_LIST = list || [];
+  providerRenderRequestsCore(window.PROVIDER_LAST_LIST);
+  return;
   var box = document.getElementById('providerRequests');
   if(!box) return;
 
@@ -4729,8 +5560,7 @@ function renderProviderRequests(list){
 var btnProvider = document.getElementById('btnProvider');
 if(btnProvider){
   btnProvider.addEventListener('click', function(){
-    if(window.showScreen) window.showScreen('provider');
-    if(window.providerLoadRequests) window.providerLoadRequests();
+    goProvider();
   });
 }
 
